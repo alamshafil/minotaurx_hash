@@ -5,7 +5,7 @@ teststart = '700000005d385ba114d079970b29a9418fd0549e7d68a95c7f168621a3142010000
 testbin = unhexlify(teststart)
 hash_bin = minotaurx_hash.getPoWHash(testbin)
 
-testoutput = b'77a19463753c27887c5697b47118719f4af6fba0647eddde71a938e7b3dd0d48'
+testoutput = b'43ea5f3eaaac756aaa2711a18c234e13038dd3b1462aae1aa710bb158f4acca9'
 
 assert hexlify(hash_bin) == testoutput
 

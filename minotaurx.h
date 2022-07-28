@@ -1,5 +1,5 @@
-#ifndef X16R_H
-#define X16R_H
+#ifndef MINOTAURX_H
+#define MINOTAURX_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -7,7 +7,7 @@ extern "C" {
 
 #include <stdint.h>
 
-void x16r_hash(const char* input, char* output);
+void minotaurx_hash(const char* input, char* output);
 
 #ifdef __cplusplus
 }

@@ -2,7 +2,7 @@
 
 #include <Python.h>
 
-#include "x16r.h"
+#include "minotaurx.h"
 
 static PyObject *minotaurx_getpowhash(PyObject *self, PyObject *args)
 {

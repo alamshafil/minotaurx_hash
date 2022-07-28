@@ -1,8 +1,8 @@
 from distutils.core import setup, Extension
 
-minotaurx_hash_module = Extension('x16r_hash',
+minotaurx_hash_module = Extension('minotaurx_hash',
                                sources = ['minotaurx_module.c',
-                                          'x16r.c',
+                                          'minotaurx.c',
                                           'sha3/blake.c',
                                           'sha3/bmw.c',
                                           'sha3/groestl.c',
@@ -19,8 +19,10 @@ minotaurx_hash_module = Extension('x16r_hash',
                                           'sha3/shavite.c',
                                           'sha3/shabal.c',
                                           'sha3/whirlpool.c',
-                                          'sha3/sha2big.c'],
-                            include_dirs=['.', './sha3'])
+                                          'sha3/sha2big.c',
+                                          'yespower/sha256.c',
+                                          'yespower/yespower.c'],
+                            include_dirs=['.', './sha3', './yespower'])
 
 setup (name = 'minotaurx_hash',
        version = '1.0',
