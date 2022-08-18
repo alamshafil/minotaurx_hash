@@ -50,15 +50,10 @@
  * XOP, some slowdown is sometimes observed on Intel CPUs with AVX.
  */
 #ifdef __XOP__
-#warning "Note: XOP is enabled.  That's great."
 #elif defined(__AVX__)
-#warning "Note: AVX is enabled.  That's OK."
 #elif defined(__SSE2__)
-#warning "Note: AVX and XOP are not enabled.  That's OK."
 #elif defined(__x86_64__) || defined(__i386__)
-#warning "SSE2 not enabled.  Expect poor performance."
 #else
-#warning "Note: building generic code for non-x86.  That's OK."
 #endif
 
 /*
@@ -191,6 +186,8 @@ static int free_region(yespower_region_t *region)
 #if __STDC_VERSION__ >= 199901L
 /* Have restrict */
 #elif defined(__GNUC__)
+#define restrict __restrict
+#elif defined(_MSC_VER)
 #define restrict __restrict
 #else
 #define restrict
@@ -1205,6 +1202,25 @@ fail:
 	return -1;
 }
 
+#ifndef thread_local
+# if __STDC_VERSION__ >= 201112 && !defined __STDC_NO_THREADS__
+#  define thread_local _Thread_local
+# elif defined _WIN32 && ( \
+       defined _MSC_VER || \
+       defined __ICL || \
+       defined __DMC__ || \
+       defined __BORLANDC__ )
+#  define thread_local __declspec(thread) 
+/* note that ICC (linux) and Clang are covered by __GNUC__ */
+# elif defined __GNUC__ || \
+       defined __SUNPRO_C || \
+       defined __xlC__
+#  define thread_local __thread
+# else
+#  error "Cannot define thread_local"
+# endif
+#endif
+
 /**
  * yespower_tls(src, srclen, params, dst):
  * Compute yespower(src[0 .. srclen - 1], N, r), to be checked for "< target".
@@ -1215,8 +1231,8 @@ fail:
 int yespower_tls(const uint8_t *src, size_t srclen,
     const yespower_params_t *params, yespower_binary_t *dst)
 {
-	static __thread int initialized = 0;
-	static __thread yespower_local_t local;
+	static thread_local int initialized = 0;
+	static thread_local yespower_local_t local;
 
 	if (!initialized) {
 		init_region(&local);
